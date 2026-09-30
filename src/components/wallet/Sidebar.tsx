@@ -5,6 +5,7 @@ import { Separator } from '@/components/ui/separator';
 import AccountSummary from './AccountSummary';
 import ThemeToggle from './ThemeToggle';
 import { useWalletAuth } from '@/lib/WalletAuth';
+import NotificationButton from './NotificationButton';
 
 interface Props {
   onTopUp: () => void;
@@ -29,6 +30,9 @@ export default function Sidebar({ onTopUp, onReset }: Props) {
         <div className="leading-tight">
           <div className="text-sm font-semibold">Mobile Money</div>
           <div className="text-[11px] text-muted-foreground">Personal wallet</div>
+        </div>
+        <div className="ml-auto">
+          <NotificationButton />
         </div>
       </div>
 

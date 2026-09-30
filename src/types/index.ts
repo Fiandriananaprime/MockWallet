@@ -73,3 +73,13 @@ export interface ErrorResponse {
   error?: string;
   statusCode?: number;
 }
+
+export interface PhoneVerificationNotification {
+  id: string;
+  type: 'PHONE_VERIFICATION';
+  phoneNumber: string;
+  message: string;
+  otp: string;
+  createdAt: string;
+  expiresAt: string;
+}

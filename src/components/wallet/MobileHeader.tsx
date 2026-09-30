@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import AccountSummary from './AccountSummary';
 import ThemeToggle from './ThemeToggle';
+import NotificationButton from './NotificationButton';
 import { useWalletAuth } from '../../lib/WalletAuth';
 import { useAccount } from '../../hook/useAccount';
 import { formatMoney } from '../../utils/format';
@@ -42,6 +43,7 @@ export default function MobileHeader({ onTopUp, onReset }: Props) {
       </div>
 
       <div className="flex items-center gap-2">
+        <NotificationButton />
         {data && (
           <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold tabular-nums">
             {formatMoney(data.balance, data.currency)}

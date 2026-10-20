@@ -10,12 +10,14 @@ export type TransactionStatus = 'SUCCESS' | 'FAILED';
 
 export interface RegisterRequest {
   provider: Provider;
+  accountName: string;
   password: string;
 }
 
 export interface RegisterResponse {
   msisdn: string;
   provider: Provider;
+  accountName: string;
   balance: number;
   currency: string;
   status?: AccountStatus;
@@ -37,6 +39,7 @@ export interface AuthResponse {
 export interface AccountResponse {
   msisdn: string;
   provider: Provider;
+  accountName: string;
   balance: number;
   currency: string;
   status: AccountStatus;

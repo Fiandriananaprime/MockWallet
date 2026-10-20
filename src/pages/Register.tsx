@@ -24,6 +24,7 @@ const PROVIDERS: Provider[] = ['MVOLA', 'ORANGE_MONEY'];
 export default function Register() {
   const navigate = useNavigate();
   const [provider, setProvider] = useState<Provider>('MVOLA');
+  const [accountName, setAccountName] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [show, setShow] = useState(false);
@@ -35,6 +36,11 @@ export default function Register() {
   const submit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    if (!accountName.trim()) {
+      setError('Enter the account name');
+      return;
+    }
     if (!password) {
       setError('Enter a password');
       return;
@@ -47,9 +53,10 @@ export default function Register() {
       setError('Passwords do not match');
       return;
     }
+
     setLoading(true);
     try {
-      const res = await register({ provider, password });
+      const res = await register({ provider, accountName: accountName.trim(), password });
       // The backend may return a generated password — we deliberately ignore
       // it and never display or persist it.
       setCreated(res);
@@ -83,6 +90,13 @@ export default function Register() {
             <div className="flex items-center gap-2">
               <span className={`h-3 w-3 rounded-full ${theme.dot}`} />
               <span className="font-medium">{PROVIDER_LABEL[created.provider]}</span>
+            </div>
+
+            <div>
+              <div className="text-xs uppercase tracking-wider text-muted-foreground">
+                Account name
+              </div>
+              <div className="mt-1 font-medium">{created.accountName || accountName.trim()}</div>
             </div>
 
             <div>
@@ -122,7 +136,7 @@ export default function Register() {
   return (
     <AuthShell
       title="Create your wallet"
-      subtitle="Choose a provider and set a password. We'll generate your number."
+      subtitle="Choose a provider, name your account, and set a password. We'll generate your number."
     >
       <Card>
         <form onSubmit={submit}>
@@ -144,6 +158,19 @@ export default function Register() {
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="accountName">Account name</Label>
+              <Input
+                id="accountName"
+                value={accountName}
+                onChange={(e) => setAccountName(e.target.value)}
+                placeholder="e.g. Rakoto Rabe"
+                autoComplete="name"
+                maxLength={100}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
                 <Input
@@ -153,6 +180,7 @@ export default function Register() {
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete="new-password"
                   className="pr-10"
+                  required
                 />
                 <button
                   type="button"
@@ -173,6 +201,7 @@ export default function Register() {
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 autoComplete="new-password"
+                required
               />
             </div>
 

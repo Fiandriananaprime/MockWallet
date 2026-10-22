@@ -4,7 +4,7 @@ export type Provider = 'MVOLA' | 'ORANGE_MONEY';
 
 export type AccountStatus = 'ACTIVE' | 'BLOCKED' | 'CLOSED' | string;
 
-export type TransactionType = 'PAYMENT' | 'TOPUP' | 'RESET' | 'REFUND';
+export type TransactionType = 'PAYMENT' | 'TOPUP' | 'RESET' | 'REFUND' | 'PAYOUT_SENT' | 'PAYOUT_RECEIVED';
 
 export type TransactionStatus = 'SUCCESS' | 'FAILED';
 

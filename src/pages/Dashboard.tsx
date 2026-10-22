@@ -1,6 +1,10 @@
 import { Link, useOutletContext } from 'react-router-dom';
 import BalanceCard from '@/components/wallet/BalanceCard';
 import TransactionTable from '@/components/wallet/TransactionTable';
+import PendingPayments from '@/components/wallet/PendingPayments';
+import DisplayNameCard from '@/components/wallet/DisplayNameCard';
+import PinSetupCard from '@/components/wallet/PinSetupCard';
+import { useAccount } from '@/hook/useAccount';
 
 interface ShellContext {
   openTopUp: () => void;
@@ -9,6 +13,7 @@ interface ShellContext {
 
 export default function Dashboard() {
   const { openTopUp, openReset } = useOutletContext<ShellContext>();
+  const { data: account } = useAccount();
 
   return (
     <div className="space-y-8">
@@ -18,6 +23,10 @@ export default function Dashboard() {
       </div>
 
       <BalanceCard onTopUp={openTopUp} onReset={openReset} />
+      {account && <DisplayNameCard currentName={account.displayName} />}
+
+      {account && !account.pinConfigured && <PinSetupCard />}
+      {account && <PendingPayments provider={account.provider} />}
 
       <section>
         <div className="mb-3 flex items-center justify-between">

@@ -16,6 +16,8 @@ import Login from '@/pages/Login.tsx';
 import Register from '@/pages/Register.tsx';
 import Dashboard from '@/pages/Dashboard.tsx';
 import Transactions from '@/pages/Transaction.tsx';
+import OrangePayment from '@/pages/OrangePayment.tsx';
+import MvolaPayment from '@/pages/MvolaPayment.tsx';
 import IndexPage from '@/pages/Index.tsx';
 
 function App() {
@@ -45,6 +47,8 @@ function App() {
                 <Route path="/" element={<IndexPage />} />
 
                 <Route element={<WalletProtectedRoute />}>
+                  <Route path="/orange/pay/:payToken" element={<OrangePayment />} />
+                  <Route path="/mvola/pay/:serverCorrelationId" element={<MvolaPayment />} />
                   <Route element={<WalletShell />}>
                     <Route path="/account" element={<Dashboard />} />
                     <Route path="/transactions" element={<Transactions />} />

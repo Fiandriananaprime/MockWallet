@@ -24,8 +24,11 @@ const PROVIDERS: Provider[] = ['MVOLA', 'ORANGE_MONEY'];
 export default function Register() {
   const navigate = useNavigate();
   const [provider, setProvider] = useState<Provider>('MVOLA');
+  const [displayName, setDisplayName] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
+  const [pin, setPin] = useState('');
+  const [confirmPin, setConfirmPin] = useState('');
   const [show, setShow] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -39,7 +42,7 @@ export default function Register() {
       setError('Enter a password');
       return;
     }
-    if (password.length < 4) {
+    if (password.length < 8) {
       setError('Password is too short');
       return;
     }
@@ -47,9 +50,17 @@ export default function Register() {
       setError('Passwords do not match');
       return;
     }
+    if (!/^\d{4}$/.test(pin)) {
+      setError('Your payment PIN must contain exactly 4 digits');
+      return;
+    }
+    if (pin !== confirmPin) {
+      setError('Payment PINs do not match');
+      return;
+    }
     setLoading(true);
     try {
-      const res = await register({ provider, password });
+      const res = await register({ provider, password, pin, confirmPin, displayName });
       // The backend may return a generated password — we deliberately ignore
       // it and never display or persist it.
       setCreated(res);
@@ -122,7 +133,7 @@ export default function Register() {
   return (
     <AuthShell
       title="Create your wallet"
-      subtitle="Choose a provider and set a password. We'll generate your number."
+      subtitle="Choose a provider, set your password and create a 4-digit payment PIN."
     >
       <Card>
         <form onSubmit={submit}>
@@ -141,6 +152,19 @@ export default function Register() {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="display-name">Wallet name (optional)</Label>
+              <Input
+                id="display-name"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value.slice(0, 80))}
+                maxLength={80}
+                autoComplete="nickname"
+                placeholder="For example, NovaMarket"
+              />
+              <p className="text-xs text-muted-foreground">This name is shown to people paying this wallet.</p>
             </div>
 
             <div className="space-y-2">
@@ -173,6 +197,38 @@ export default function Register() {
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 autoComplete="new-password"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="payment-pin">Payment PIN</Label>
+              <Input
+                id="payment-pin"
+                type="password"
+                inputMode="numeric"
+                autoComplete="new-password"
+                pattern="[0-9]{4}"
+                maxLength={4}
+                value={pin}
+                onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                placeholder="4 digits"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="confirm-pin">Confirm payment PIN</Label>
+              <Input
+                id="confirm-pin"
+                type="password"
+                inputMode="numeric"
+                autoComplete="new-password"
+                pattern="[0-9]{4}"
+                maxLength={4}
+                value={confirmPin}
+                onChange={(e) => setConfirmPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                placeholder="Repeat your 4-digit PIN"
+                required
               />
             </div>
 

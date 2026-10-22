@@ -127,7 +127,7 @@ export default function NotificationButton() {
             {data.map((notification) => (
               <article key={notification.id} className="rounded-lg border bg-muted/20 p-3 text-sm">
                 <div className="flex items-start justify-between gap-3">
-                  <span className="font-medium">{notification.type}</span>
+                  <span className="font-medium">{notification.title || 'SMS de vérification'}</span>
                   <time className="text-xs text-muted-foreground">{formatDate(notification.createdAt)}</time>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">{notification.phoneNumber}</p>

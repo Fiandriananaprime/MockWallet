@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { login } from '@/api/auth.api';
 import { useWalletAuth } from '@/lib/WalletAuth';
 import { toApiError } from '@/lib/apiError';
@@ -13,6 +13,12 @@ import { Eye, EyeOff } from 'lucide-react';
 export default function Login() {
   const { login: doLogin } = useWalletAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = (location.state as { from?: { pathname?: string; search?: string; hash?: string } } | null)
+    ?.from;
+  const destination = from?.pathname
+    ? `${from.pathname}${from.search ?? ''}${from.hash ?? ''}`
+    : '/account';
   const [msisdn, setMsisdn] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
@@ -30,7 +36,7 @@ export default function Login() {
     try {
       const res = await login({ msisdn: msisdn.trim(), password });
       doLogin(res.accessToken);
-      navigate('/account', { replace: true });
+      navigate(destination, { replace: true });
     } catch (err) {
       const apiErr = toApiError(err);
       setError(apiErr.status === 400 || apiErr.status === 401 ? 'Invalid credentials' : apiErr.message);

@@ -35,3 +35,13 @@ export async function resetWallet(): Promise<AccountResponse> {
   const { data } = await apiClient.post<AccountResponse>('/account/reset');
   return data;
 }
+
+export async function configurePin(pin: string): Promise<{ pinConfigured: boolean }> {
+  const { data } = await apiClient.put<{ pinConfigured: boolean }>('/account/pin', { pin });
+  return data;
+}
+
+export async function updateDisplayName(displayName: string): Promise<{ displayName: string | null }> {
+  const { data } = await apiClient.put<{ displayName: string | null }>('/account/display-name', { displayName });
+  return data;
+}

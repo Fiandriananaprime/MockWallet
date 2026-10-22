@@ -4,12 +4,13 @@ export type Provider = 'MVOLA' | 'ORANGE_MONEY';
 
 export type AccountStatus = 'ACTIVE' | 'BLOCKED' | 'CLOSED' | string;
 
-export type TransactionType = 'PAYMENT' | 'TOPUP' | 'RESET' | 'REFUND';
+export type TransactionType = 'PAYMENT' | 'TOPUP' | 'RESET' | 'REFUND' | 'PAYOUT_SENT' | 'PAYOUT_RECEIVED';
 
 export type TransactionStatus = 'SUCCESS' | 'FAILED';
 
 export interface RegisterRequest {
   provider: Provider;
+  accountName: string;
   password: string;
   pin: string;
   confirmPin: string;
@@ -19,6 +20,7 @@ export interface RegisterRequest {
 export interface RegisterResponse {
   msisdn: string;
   provider: Provider;
+  accountName: string;
   balance: number;
   currency: string;
   status?: AccountStatus;
@@ -43,6 +45,7 @@ export interface AccountResponse {
   msisdn: string;
   displayName: string | null;
   provider: Provider;
+  accountName: string;
   balance: number;
   currency: string;
   status: AccountStatus;

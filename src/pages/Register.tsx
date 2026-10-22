@@ -38,6 +38,11 @@ export default function Register() {
   const submit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    if (!accountName.trim()) {
+      setError('Enter the account name');
+      return;
+    }
     if (!password) {
       setError('Enter a password');
       return;
@@ -94,6 +99,13 @@ export default function Register() {
             <div className="flex items-center gap-2">
               <span className={`h-3 w-3 rounded-full ${theme.dot}`} />
               <span className="font-medium">{PROVIDER_LABEL[created.provider]}</span>
+            </div>
+
+            <div>
+              <div className="text-xs uppercase tracking-wider text-muted-foreground">
+                Account name
+              </div>
+              <div className="mt-1 font-medium">{created.accountName || accountName.trim()}</div>
             </div>
 
             <div>
@@ -177,6 +189,7 @@ export default function Register() {
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete="new-password"
                   className="pr-10"
+                  required
                 />
                 <button
                   type="button"
@@ -197,6 +210,7 @@ export default function Register() {
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 autoComplete="new-password"
+                required
               />
             </div>
 

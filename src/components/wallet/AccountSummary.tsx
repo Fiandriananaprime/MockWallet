@@ -41,6 +41,11 @@ export default function AccountSummary() {
         <span className={`h-2.5 w-2.5 rounded-full ${theme.dot}`} />
         <span className="text-sm font-semibold">{PROVIDER_WALLET_LABEL[data.provider]}</span>
       </div>
+      {data.accountName && (
+        <div className="text-sm font-medium truncate" title={data.accountName}>
+          {data.accountName}
+        </div>
+      )}
       <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
         <Smartphone className="h-3.5 w-3.5" />
         <span className="font-mono tracking-tight">{formatMsisdn(data.msisdn)}</span>
